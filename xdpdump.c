@@ -9,10 +9,15 @@
 #define FRAME_SIZE 2048
 #define NUM_FRAMES 2048
 
+#define FILL_RING_SIZE 512
+#define COMPLETION_RING_SIZE 512
+
 int main() {
     int xsk_fd;
     void* umem;
     struct xdp_umem_reg mr;
+    int fill_ring_size = FILL_RING_SIZE;
+    int completion_ring_size = COMPLETION_RING_SIZE;
 
     xsk_fd = socket(AF_XDP, SOCK_RAW, 0);
     if(xsk_fd < 0) {
@@ -36,6 +41,17 @@ int main() {
 
     if(setsockopt(xsk_fd, SOL_XDP, XDP_UMEM_REG, &mr, sizeof(mr))) {
         printf("umem reg failed: %s\n", strerror(errno));
+        return -1;
+    }
+
+    if(setsockopt(xsk_fd, SOL_XDP, XDP_UMEM_FILL_RING, &fill_ring_size, sizeof(fill_ring_size))) {
+        printf("fill ring failed: %s\n", strerror(errno));
+        return -1;
+    }
+
+    if(setsockopt(xsk_fd, SOL_XDP, XDP_UMEM_COMPLETION_RING,
+       &completion_ring_size, sizeof(completion_ring_size))) {
+        printf("completion ring failed: %s\n", strerror(errno));
         return -1;
     }
 
