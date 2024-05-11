@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <linux/if_xdp.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -25,6 +26,20 @@ int main() {
         printf("mmap failed: %s\n", strerror(errno));
         return -1;
     }
+
+    memset(&mr, 0, sizeof(struct xdp_umem_reg));
+    mr.addr = (uint64_t)umem;
+    mr.len = FRAME_SIZE * NUM_FRAMES;
+    mr.chunk_size = FRAME_SIZE;
+    mr.headroom = 0;
+    mr.flags = 0;
+
+    if(setsockopt(xsk_fd, SOL_XDP, XDP_UMEM_REG, &mr, sizeof(mr))) {
+        printf("umem reg failed: %s\n", strerror(errno));
+        return -1;
+    }
+
+    printf("==== success ====\n");
 
     return 0;
 }
