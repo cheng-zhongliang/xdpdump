@@ -10,7 +10,7 @@
 #include "trace.h"
 
 arg_config_t config = {
-	.name = "bytetrace",
+	.name = "\nbytetrace",
 	.summary = "a tool to trace skb in kernel by c33568",
 	.desc = "",
 };
