@@ -64,13 +64,13 @@ static void do_parse_args(int argc, char *argv[])
 			.type = OPTION_U16BE,
 			.desc = "filter dest TCP/UDP port",
 		},
-		{
-			.lname = "port",
-			.sname = 'P',
-			.dest = &pkt_args->port,
-			.type = OPTION_U16BE,
-			.desc = "filter source or dest TCP/UDP port",
-		},
+		// {
+		// 	.lname = "port",
+		// 	.sname = 'P',
+		// 	.dest = &pkt_args->port,
+		// 	.type = OPTION_U16BE,
+		// 	.desc = "filter source or dest TCP/UDP port",
+		// },
 		{
 			.lname = "proto",
 			.sname = 'p',
